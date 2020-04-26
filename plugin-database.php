@@ -97,7 +97,7 @@ function create_sage_sales_orders_table() {
             `crm_person_id` INT(50),
             `crm_opportunity_id` INT(200),
             `taxable_subject_to_discount` DECIMAL(13,4),
-            `non_taxaxble_subject_to_discount` DECIMAL(13,4),
+            `non_taxable_subject_to_discount` DECIMAL(13,4),
             `tax_subj_to_disc_prcnt_tot_subj_to` DECIMAL(13,4),
             `discount_rate` DECIMAL(13,4),
             `discount_amt` DECIMAL(13,4),
@@ -109,15 +109,15 @@ function create_sage_sales_orders_table() {
             `split_comm_rate3` DECIMAL(13,4),
             `split_comm_rate4` DECIMAL(13,4),
             `split_comm_rate5` DECIMAL(13,4),
-            `weight` FLOAT(13,3),
+            `weight` FLOAT(13,4),
             `freight_amt` DECIMAL(13,4),
             `deposit_amt` DECIMAL(13,4),
             `date_created` datetime,
             `time_created` datetime,
-            `user_created_key` text DEFAULT  NULL,
+            `user_created_key` INT(10),
             `date_updated` datetime,
             `time_updated` FLOAT(20),
-            `user_updated_key` FLOAT(20),
+            `user_updated_key` INT(10),  
             `promoted_date` datetime,
             `udf_buyer_group` VARCHAR(20),
             `udf_so_status` VARCHAR(30),
@@ -242,7 +242,7 @@ function create_sage_sales_order( $args = array() ) {
 			'crm_person_id'                      => $args['crm_person_id'],
 			'crm_opportunity_id'                 => $args['crm_opportunity_id'],
 			'taxable_subject_to_discount'        => $args['taxable_subject_to_discount'],
-			'non_taxaxble_subject_to_discount'   => $args['non_taxaxble_subject_to_discount'],
+			'non_taxable_subject_to_discount'   => $args['non_taxable_subject_to_discount'],
 			'tax_subj_to_disc_prcnt_tot_subj_to' => $args['tax_subj_to_disc_prcnt_tot_subj_to'],
 			'discount_rate'                      => $args['discount_rate'],
 			'discount_amt'                       => $args['discount_amt'],
@@ -298,103 +298,126 @@ function create_sage_sales_order( $args = array() ) {
 		),
 		// array( '%d', '%f', '%s' )
 		array(
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
+			'%s', //sales order no
+			'%s', //order date
+			'%s', //order status
+			'%s', //master repeating order no
+			'%s', //ar division no
+			'%s', //customer no
+			'%s', //bill to division no
+			'%s', //bill to customer no
+			'%s', //bill to name
+			'%s', //bill to address1
+			'%s', //bill to address2
+			'%s', //bill to address3
+			'%s', //bill to city
+			'%s', //bill to state
+			'%s', //bill to zip code
+			'%s', //bill to country code
+			'%s', //ship to code
+			'%s', //ship to name
+			'%s', //ship to address1
+			'%s', //ship to address2
+			'%s', //ship to address3
+			'%s', //ship to city
+			'%s', //ship to state
+			'%s', //ship_via
+			'%s', //ship zone
+			'%s', //ship zone actual
+			'%f', //ship weight *************
+			'%d', //customer po no ********
+			'%s', //email address
+			'%s', //residential address
+			'%s', //cancel reason code
+			'%s', //freight calculation method
+			'%s', //fob
+			'%s', //warehouse code
+			'%s', //confirm to
+			'%s', //comment
+			'%s', //tax schedule
+			'%s', //terms code
+			'%s', //tax exempt no ****
+			'%s', //rman o
+			'%d', //job no ******
+			'%s', //last invoice date
+			'%s', //last invoice no
+			'%d', //check no for deposit
+			'%s', //lot serial lines exist
+			'%s', //salesperson div no
+			'%s', //salesperson no
+			'%s', //split comissions
+			'%s', //salesperson div no2
+			'%s', //salesperson no2
+			'%s', //salesperson div no3
+			'%s', //salesperson no3
+			'%s', //salesperson div no4
+			'%s', //salesperson no4
+			'%s', //salesperson div no5
+			'%s', //salesperson no5
+			'%s', //ebm user type
+			'%s', //ebm submission type
+			'%d', //ebm user id submitting order **********
+			'%s', //payment type
+			'%s', //other payment type ref no
+			'%s', //payment type category
+			'%s', //fax no
+			'%d', //crm user id **** int or varchar/string?*******
+			'%d', //crm company id **varchar or int**???????
+			'%d', //crm person id **
+			'%d', //crm opportunity id **
+			'%f', //taxable subj to disc **** dec as float???
+			'%f', //non taxable subj to disc *** dec as float???
+			'%f', //tax subj to disc prcnt tot subj to
+			'%f', //discount rate ****
+			'%f', //discount amnt *****
+			'%f', //taxable amount
+			'%f', //nontaxable amt
+			'%f', //sales tax amt
+			'%f', //comission rate
+			'%f', //split comm rate2
+			'%f', //split comm rate3
+			'%f', //split comm rate4
+			'%f', //split comm rate5
+			'%f', //weight****
+			'%f', //freight amt ****
+			'%f', //deposit amt ***
+			'%s', //date created
+			'%s', //time created *******??????
+			'%d', //user created key
+			'%s', //date updated
+			'%s', //time updated
+			'%d',  //user updated key ****
+			'%s', //promoted date
+			'%s', //udf buyer group
+			'%s', //udf so status
+			'%s', //udf need by date
+			'%s', //udf ship to email
+			'%s', //udf corporate name
+			'%s', //udf project name
+			'%s', //udf ship to name
+			'%s', //udf programmed
+			'%s', //udf shipping notes
+			'%s', //udf ship by
+			'%s', //udf picked
+			'%s', //udf shipping status
+			'%s', //udf ship to email2
+			'%s', //udf ship to email3
+			'%s', //udf customer name
+			'%s', //udf tracking number
+			'%s', //udf order handling
+			'%s', //udf comments
+			'%s', //udf bin location
+			'%s', //udf ext diff
+			'%s', //udf free shipping
+			'%s', //udf tracking number2
+			'%s', //udf type
+			'%s', //udf site code
+			'%s', //udf promo code
+			'%s', //udf phone number
+			'%s', //udf woid
+			'%f', //udf contract charges ***
+			'%f', //udf published charges ****
+			'%s', //udf projec type
 
 		)
 	);
@@ -475,7 +498,7 @@ function test_insert() {
 		'crm_person_id'                      => '',
 		'crm_opportunity_id'                 => '',
 		'taxable_subject_to_discount'        => '',
-		'non_taxaxble_subject_to_discount'   => '',
+		'non_taxable_subject_to_discount'   => '',
 		'tax_subj_to_disc_prcnt_tot_subj_to' => '',
 		'discount_rate'                      => '',
 		'discount_amt'                       => '',
@@ -669,7 +692,7 @@ function update_sage_sales_order(string $sage_sales_order_id, $args = array()){
 			'crm_person_id'                      => $args['crm_person_id'],
 			'crm_opportunity_id'                 => $args['crm_opportunity_id'],
 			'taxable_subject_to_discount'        => $args['taxable_subject_to_discount'],
-			'non_taxaxble_subject_to_discount'   => $args['non_taxaxble_subject_to_discount'],
+			'non_taxable_subject_to_discount'   => $args['non_taxable_subject_to_discount'],
 			'tax_subj_to_disc_prcnt_tot_subj_to' => $args['tax_subj_to_disc_prcnt_tot_subj_to'],
 			'discount_rate'                      => $args['discount_rate'],
 			'discount_amt'                       => $args['discount_amt'],
@@ -729,103 +752,126 @@ function update_sage_sales_order(string $sage_sales_order_id, $args = array()){
 		),
 		// array( '%d', '%f', '%s' )
 		array(
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
-			'%s',
+			'%s', //sales order no
+			'%s', //order date
+			'%s', //order status
+			'%s', //master repeating order no
+			'%s', //ar division no
+			'%s', //customer no
+			'%s', //bill to division no
+			'%s', //bill to customer no
+			'%s', //bill to name
+			'%s', //bill to address1
+			'%s', //bill to address2
+			'%s', //bill to address3
+			'%s', //bill to city
+			'%s', //bill to state
+			'%s', //bill to zip code
+			'%s', //bill to country code
+			'%s', //ship to code
+			'%s', //ship to name
+			'%s', //ship to address1
+			'%s', //ship to address2
+			'%s', //ship to address3
+			'%s', //ship to city
+			'%s', //ship to state
+			'%s', //ship_via
+			'%s', //ship zone
+			'%s', //ship zone actual
+			'%f', //ship weight *************
+			'%d', //customer po no ********
+			'%s', //email address
+			'%s', //residential address
+			'%s', //cancel reason code
+			'%s', //freight calculation method
+			'%s', //fob
+			'%s', //warehouse code
+			'%s', //confirm to
+			'%s', //comment
+			'%s', //tax schedule
+			'%s', //terms code
+			'%s', //tax exempt no ****
+			'%s', //rman o
+			'%d', //job no ******
+			'%s', //last invoice date
+			'%s', //last invoice no
+			'%d', //check no for deposit
+			'%s', //lot serial lines exist
+			'%s', //salesperson div no
+			'%s', //salesperson no
+			'%s', //split comissions
+			'%s', //salesperson div no2
+			'%s', //salesperson no2
+			'%s', //salesperson div no3
+			'%s', //salesperson no3
+			'%s', //salesperson div no4
+			'%s', //salesperson no4
+			'%s', //salesperson div no5
+			'%s', //salesperson no5
+			'%s', //ebm user type
+			'%s', //ebm submission type
+			'%d', //ebm user id submitting order **********
+			'%s', //payment type
+			'%s', //other payment type ref no
+			'%s', //payment type category
+			'%s', //fax no
+			'%d', //crm user id **** int or varchar/string?*******
+			'%d', //crm company id **varchar or int**???????
+			'%d', //crm person id **
+			'%d', //crm opportunity id **
+			'%f', //taxable subj to disc **** dec as float???
+			'%f', //non taxable subj to disc *** dec as float???
+			'%f', //tax subj to disc prcnt tot subj to
+			'%f', //discount rate ****
+			'%f', //discount amnt *****
+			'%f', //taxable amount
+			'%f', //nontaxable amt
+			'%f', //sales tax amt
+			'%f', //comission rate
+			'%f', //split comm rate2
+			'%f', //split comm rate3
+			'%f', //split comm rate4
+			'%f', //split comm rate5
+			'%f', //weight****
+			'%f', //freight amt ****
+			'%f', //deposit amt ***
+			'%s', //date created
+			'%s', //time created *******??????
+			'%d', //user created key
+			'%s', //date updated
+			'%s', //time updated
+			'%d',  //user updated key ****
+			'%s', //promoted date
+			'%s', //udf buyer group
+			'%s', //udf so status
+			'%s', //udf need by date
+			'%s', //udf ship to email
+			'%s', //udf corporate name
+			'%s', //udf project name
+			'%s', //udf ship to name
+			'%s', //udf programmed
+			'%s', //udf shipping notes
+			'%s', //udf ship by
+			'%s', //udf picked
+			'%s', //udf shipping status
+			'%s', //udf ship to email2
+			'%s', //udf ship to email3
+			'%s', //udf customer name
+			'%s', //udf tracking number
+			'%s', //udf order handling
+			'%s', //udf comments
+			'%s', //udf bin location
+			'%s', //udf ext diff
+			'%s', //udf free shipping
+			'%s', //udf tracking number2
+			'%s', //udf type
+			'%s', //udf site code
+			'%s', //udf promo code
+			'%s', //udf phone number
+			'%s', //udf woid
+			'%f', //udf contract charges ***
+			'%f', //udf published charges ****
+			'%s', //udf projec type
 
 		
 		));
@@ -907,7 +953,7 @@ function test_update(){
 		'crm_person_id'                      => '',
 		'crm_opportunity_id'                 => '',
 		'taxable_subject_to_discount'        => '',
-		'non_taxaxble_subject_to_discount'   => '',
+		'non_taxable_subject_to_discount'   => '',
 		'tax_subj_to_disc_prcnt_tot_subj_to' => '',
 		'discount_rate'                      => '',
 		'discount_amt'                       => '',
